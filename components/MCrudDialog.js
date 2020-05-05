@@ -19,7 +19,7 @@ export default Vue.component('m-crud-dialog', {
       {
         props: {
           value: this.value,
-          width: 1000
+          width: 800
         },
         on: {
           input: (state) => { this.value = state }

@@ -1,33 +1,18 @@
 <template lang="pug">
-m-table-page(
-  :headers="headers"
-  :Model="models.Driver"
-  :getDataInForm="getDataInForm"
-)
-  template(v-slot:item.num="{ value }") + {{ value }}
-  template(v-slot:form="{ item, buses }")
-    v-text-field(label="Num" v-model="item.num")
-    v-select(:items="buses")
+v-container
+  v-row
+    v-col
+    v-col
+      v-subheader Data
+      v-list
+        v-list-item(to="/drivers") Drivers
+        v-list-item(to="/buses") Buses
+        v-list-item(to="/routes") Routes
+        v-list-item(to="/ways") Ways
 </template>
 
 <script>
-
-import MTablePage from '@/components/MTablePage'
-
 export default {
-  components: { MTablePage },
-  data: function () {
-    return {
-      headers: [
-        { text: 'Num', value: 'num' },
-        { text: 'Name', value: 'name' }
-      ]
-    }
-  },
-  methods: {
-    getDataInForm: async function () {
-      return {}
-    }
-  }
+  
 }
 </script>

@@ -59,6 +59,7 @@ graphicSchema.methods.rollException = function (status) {
       if (status.value == nextStatus) {
         return null
       }
+      console.log(nextStatus)
       return { date: status.date, status: nextStatus }
     }).filter(value => value)
   }
