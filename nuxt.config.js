@@ -2,6 +2,10 @@ var dev = process.env.NODE_ENV === 'development'
 
 module.exports = {
   mode: 'spa',
+  server: {
+    host: '0.0.0.0',
+    port: 8080
+  },
   head: {
     titleTemplate: '%s',
     title: process.env.npm_package_name || '',
