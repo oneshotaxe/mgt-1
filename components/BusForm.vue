@@ -22,8 +22,11 @@ export default {
     }
   },
   async created () {
-    const { data } = await this.$axios.post('/ways/read')
-    this.ways = data.map(b => ({ text: b.num, value: b._id }))
+    const { data } = await this.$axios.post('/ways/read?extend=true')
+    this.ways = data.sort((a, b) => a.num - b.num)
+      .sort((a, b) => a.route.num - b.route.num)
+      .map(b => ({ text: b.route.num + '/' + b.num, value: b._id }))
+      
   }
 }
 </script>

@@ -1,6 +1,7 @@
 <template lang="pug">
   v-container
     v-toolbar(flat)
+      v-text-field(label="Поиск" v-model="search" hide-details)
       v-spacer
       v-btn(:to="`/`" text) Назад
       v-btn(:to="`/${prefix}/new`" text) Новый
@@ -10,6 +11,7 @@
       @remove="onRemove"
     )
     v-data-table(
+      :search="search"
       :headers="headers"
       :items="items"
       @click:row="open"
@@ -23,7 +25,8 @@ export default {
   data () {
     return {
       tableFactory: getTableFactoryByPrefix(this.$route.params.prefix),
-      items: []
+      items: [],
+      search: ''
     }
   },
   computed: {
