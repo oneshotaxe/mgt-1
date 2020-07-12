@@ -12,13 +12,22 @@ module.exports = function (conn) {
       type: {
         name: Types.String,
         format: Types.String,
+        date: Types.String,
         items: [Types.String],
+        status: Types.String,
         exceptions: [{
           date: Types.String,
           value: Types.String
         }]
       },
-      default: {}
+      default: {
+        name: '111',
+        format: 'РВ',
+        date: '2019-01-01',
+        items: ['Р', 'В'],
+        status: '',
+        exceptions: []
+      }
     }
   }, {
     toJSON: { virtuals: true },

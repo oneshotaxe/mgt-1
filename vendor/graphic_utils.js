@@ -9,7 +9,7 @@ function appendItems(graphic) {
 
 function removeItems(graphic) {
   const newGraphic = deepClone(graphic)
-  newGraphic.items = newGraphic.items.splice(-graphic.format.length)
+  newGraphic.items = newGraphic.items.splice(graphic.format.length)
   return newGraphic
 }
 
@@ -72,7 +72,8 @@ function statusesByDate(graphic, date, count = 1) {
     statuses.push({
       date: curDate.format('YYYY-MM-DD'),
       value: status,
-      exception: ex && ex.value
+      exception: ex && ex.value,
+      global: graphic.status
     })
 
     curDate = curDate.add(1, 'days')
@@ -81,10 +82,17 @@ function statusesByDate(graphic, date, count = 1) {
   return statuses
 }
 
+function setStatus(graphic, status) {
+  const newGraphic = deepClone(graphic)
+  newGraphic.status = status
+  return newGraphic
+}
+
 module.exports = {
   appendItems,
   removeItems,
   rollItem,
   rollException,
-  statusesByDate
+  statusesByDate,
+  setStatus
 }

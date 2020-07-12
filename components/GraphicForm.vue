@@ -8,6 +8,12 @@
         :value="value.name"
         @change="setGraphic"
       )
+      v-select(
+        label="Статус"
+        :items="[{ text: 'Отпуск', value: 'О' }, { text: 'Больничный', value: 'Б' },{ text: '', value: ''}]"
+        :value="value.status"
+        @change="setStatus"
+      )
       v-btn.mr-2.mb-2.white(
         elevation="1"
         rounded
@@ -18,6 +24,21 @@
         :disabled="item == 'В'"
         @click="rollItem(i)"
       ) {{ item }}
+      v-btn.mr-2.mb-2.white(
+        elevation="1"
+        rounded
+        width="38"
+        min-width="38"
+        @click="appendItems(i)"
+      ) +
+      v-btn.mr-2.mb-2.white(
+        elevation="1"
+        rounded
+        width="38"
+        min-width="38"
+        v-if="isExpanded"
+        @click="removeItems(i)"
+      ) -
       v-toolbar(flat dense)
         v-btn(fab text small @click="prevCalendarDate") {{ '<' }}
         v-spacer
@@ -37,7 +58,7 @@
           width="38"
           min-width="38"
           @click="rollException(status)"
-        ) {{ status.exception || status.value }}
+        ) {{ status.exception || status.global || status.value }}
 </template>
 
 <script>
@@ -48,7 +69,8 @@ import {
   removeItems,
   rollItem,
   rollException,
-  statusesByDate
+  statusesByDate,
+  setStatus
 } from '@/vendor/graphic_utils'
 
 export default {
@@ -64,6 +86,9 @@ export default {
     }
   },
   computed: {
+    isExpanded () {
+      return this.value.items && this.value.items.length > this.value.format.length
+    },
     calendarTitle() {
       return this.calendarStartDate.format('YYYY-MM-DD') + ' - ' + moment(this.calendarStartDate).add(14, 'd').format('YYYY-MM-DD')
     },
@@ -78,11 +103,20 @@ export default {
     nextCalendarDate() {
       this.calendarStartDate = moment(this.calendarStartDate).add(14, 'd')
     },
+    appendItems() {
+      this.$emit('input', appendItems(this.value))
+    },
+    removeItems() {
+      this.$emit('input', removeItems(this.value))
+    },
     rollItem(index) {
       this.$emit('input', rollItem(this.value, index))
     },
     rollException(status) {
       this.$emit('input', rollException(this.value, status))
+    },
+    setStatus(status) {
+      this.$emit('input', setStatus(this.value, status))
     },
     statusesByDate(graphic, date, count = 1) {
       return graphic.name ? statusesByDate(graphic, date, count) : []
@@ -93,6 +127,7 @@ export default {
         name: graphic.name,
         format: graphic.format,
         date: graphic.date,
+        status: '',
         items: graphic.format.split(''),
         exceptions: []
       })

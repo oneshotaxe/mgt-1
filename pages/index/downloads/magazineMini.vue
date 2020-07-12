@@ -3,7 +3,7 @@
     v-card
       v-card-title {{ title }}
       v-card-text
-        v-text-field(label="Дата" v-model="date")
+        v-text-field(label="Месяц" v-model="month" v-mask="'####-##'")
       v-card-actions
         v-spacer
         v-btn(@click="fn") Скачать
@@ -11,20 +11,22 @@
 
 <script>
 import FileSaver from 'file-saver'
+import moment from 'moment'
 import { buildMagazineMini } from '@/vendor/excels'
+import {mask} from 'vue-the-mask'
 
 export default {
+  directives: {mask},
   data() {
     return {
       title: 'Журнал мини',
       dialog: true,
-      date: ''
+      month: moment().format('YYYY-MM')
     }
   },
   methods: {
     async fn() {
-      const { data } = await this.$axios.post('/magazine', { busesPerPage: 5 })
-  console.log(data)
+      const { data } = await this.$axios.post('/magazine', { busesPerPage: 5, month: this.month })
       const buf = await buildMagazineMini(data)
       await FileSaver.saveAs(new Blob([buf]), 'magazine mini.xlsx')
       this.$router.push(`/`)

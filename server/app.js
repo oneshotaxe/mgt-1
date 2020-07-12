@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const bodyParser = require('body-parser')
+const moment = require('moment')
 const createModels = require('./createModels')
 const createCrudRouter = require('./createCrudRouter')
 
@@ -112,6 +113,19 @@ app.post('/magazine', async (req, res) => {
   const Bus = res.app.get('mongoose').models['bus']
   let buses = await Bus.find().populate({ path: 'way', populate: 'route' }).populate('drivers')
   buses = buses.sort((a, b) => a.num - b.num)
+
+  let daysInMonth = moment(req.body.month, "YYYY-MM").daysInMonth()
+
+  buses = buses.map(bus => ({
+    num: bus.num,
+    way: bus.way,
+    drivers: bus.drivers.map(driver => ({
+      num: driver.num,
+      name: driver.shortName,
+      graphic: driver.graphic,
+      statuses: statusesByDate(driver.graphic, req.body.month + '-01', daysInMonth)
+    }))
+  }))
 
   const magazine = { pages: [] }
   const busesPerPage = req.body.busesPerPage || 4

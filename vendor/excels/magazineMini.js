@@ -14,7 +14,7 @@ export default async function (magazine) {
       paperSize: 9,
       horizontalCentered: true,
       verticalCentered: true,
-      orientation:'landscape',
+      orientation: 'landscape',
       margins: {
         left: 0.2, right: 0.2,
         top: 0.2, bottom: 0.2,
@@ -105,7 +105,7 @@ function renderHeader(cursor) {
   ).forEach(({ pos, text }) => {
     cursor.getCell(pos[0], pos[1]).value = text
   })
-  
+
   new Array(31).fill(1).map((_, i) => i + 1).forEach(i => {
     cursor.getCell(2, i + 6).value = i
   })
@@ -134,7 +134,7 @@ function renderBus(cursor, bus) {
       size: 12
     }
   })
-  cursor.getArea(1, 37, 8, COLUMNS_PER_PAGE).forEach(cell => {
+  cursor.getArea(1, 38, 8, COLUMNS_PER_PAGE).forEach(cell => {
     cell.alignment.horizontal = 'left'
     cell.font = {
       size: 9,
@@ -176,7 +176,7 @@ function fillBusInfo(cursor, bus) {
   cursor.getCell(1, 2).value = bus.num
 
   const positions = getDriverPositionsByCount(bus.drivers.length)
-  
+
   positions.forEach((pos, i) => {
     fillDriverInfo(cursor.createCursor(pos, 3), bus.drivers[i])
   })
@@ -187,9 +187,13 @@ function fillBusInfo(cursor, bus) {
 }
 
 function fillDriverInfo(cursor, driver) {
-  cursor.getCell(1, 1).value = driver.shortName
+  cursor.getCell(1, 1).value = driver.name
   cursor.getCell(1, 2).value = driver.num
   cursor.getCell(1, 3).value = driver.graphic && driver.graphic.name
+
+  for (let i = 0; i < driver.statuses.length; i++) {
+    cursor.getCell(1, 5 + i).value = driver.statuses[i].value
+  }
 }
 
 function fillWayInfo(cursor, way) {
