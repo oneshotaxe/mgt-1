@@ -1,38 +1,133 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const bodyParser = require('body-parser')
-const { createRouter } = require('./CrudRouter')
+const createModels = require('./createModels')
+const createCrudRouter = require('./createCrudRouter')
+
+const { statusesByDate } = require('../vendor/graphic_utils')
 
 const app = express()
-
 app.use(bodyParser.json())
 
 mongoose.set('useFindAndModify', false)
-mongoose.connect('mongodb://localhost/base',
+const conn = mongoose.createConnection('mongodb://localhost/mgt',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
-  },
-  function (err) {
-    if (err) throw err;
   }
 )
 
-const {
-  driverSchema,
-  busSchema,
-  routeSchema,
-  waySchema
-} = require('./schemas')
+createModels(conn)
 
-const Bus = mongoose.model('bus', busSchema)
-const Driver = mongoose.model('driver', driverSchema)
-const Route = mongoose.model('route', routeSchema)
-const Way = mongoose.model('way', waySchema)
+app.set('mongoose', conn)
 
-app.use('/buses', createRouter('bus'))
-app.use('/drivers', createRouter('driver'))
-app.use('/routes', createRouter('route'))
-app.use('/ways', createRouter('way'))
+app.use('/drivers', createCrudRouter('driver', [
+  'bus'
+]))
+app.use('/buses', createCrudRouter('bus', [
+  'way'
+]))
+app.use('/routes', createCrudRouter('route'))
+app.use('/ways', createCrudRouter('way', [
+  'route'
+]))
+
+app.post('/report', async (req, res) => {
+  const Bus = res.app.get('mongoose').models['bus']
+  let buses = await Bus.find().populate('drivers')
+  buses = buses.sort((a, b) => a.num - b.num)
+    .map(bus => ({
+      _id: bus._id,
+      num: bus.num,
+      status: bus.status,
+      drivers: bus.drivers.map(driver => {
+        const status = statusesByDate(driver.graphic, req.body.date || '2020-06-26', 1)[0]
+        
+        return {
+          _id: driver._id,
+          num: driver.num,
+          status: status.exception || status.value
+        }
+      })
+    }))
+
+  const report = {
+    rows: [],
+    buses: {
+      'Ремонт': [],
+      'СВАРЗ': [],
+      'Резерв': []
+    },
+    drivers: {
+      'В': [],
+      'Б': [],
+      'О': [],
+      'Резерв': []
+    }
+  }
+
+  buses.forEach(bus => {
+    const row = {
+      bus: null,
+      first: null,
+      second: null,
+      full: null
+    }
+
+    if (!['Ремонт', 'СВАРЗ'].includes(bus.status)) {
+      row.bus = bus
+    } else {
+      report.buses[bus.status].push(bus)
+    }
+
+    bus.drivers.forEach(driver => {
+      if (['В', 'Б', 'О'].includes(driver.status)) {
+        report.drivers[driver.status].push(driver)
+        return
+      }
+
+      if (driver.status == '1') {
+        row.first = driver
+      } else if (driver.status == '2') {
+        row.second = driver
+      } else if (driver.status == 'Р') {
+        row.full = driver
+      }
+
+      if (row.bus == null) {
+        report.drivers['Резерв'].push(driver)
+      }
+    })
+    if (row.first == row.second == row.full == null && row.bus != null) {
+      report.buses['Резерв'].push(bus)
+    }
+
+    report.rows.push(row)
+  })
+
+  res.json(report)
+})
+
+app.post('/magazine', async (req, res) => {
+  const Bus = res.app.get('mongoose').models['bus']
+  let buses = await Bus.find().populate({ path: 'way', populate: 'route' }).populate('drivers')
+  buses = buses.sort((a, b) => a.num - b.num)
+
+  const magazine = { pages: [] }
+  const busesPerPage = req.body.busesPerPage || 4
+
+  for (
+    let i = 0, pageNumber = magazine.pages.length;
+    i < buses.length;
+    i += busesPerPage, pageNumber++
+  ) {
+    magazine.pages.push({
+      buses: buses.slice(i, i + busesPerPage),
+      number: pageNumber
+    })
+  }
+
+  res.json(magazine)
+})
 
 module.exports = app

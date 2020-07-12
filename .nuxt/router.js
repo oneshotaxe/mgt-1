@@ -3,11 +3,15 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _5df0784f = () => interopDefault(import('..\\pages\\buses.vue' /* webpackChunkName: "pages_buses" */))
-const _c9df34a8 = () => interopDefault(import('..\\pages\\drivers.vue' /* webpackChunkName: "pages_drivers" */))
-const _0022a479 = () => interopDefault(import('..\\pages\\routes.vue' /* webpackChunkName: "pages_routes" */))
-const _fc28055a = () => interopDefault(import('..\\pages\\ways.vue' /* webpackChunkName: "pages_ways" */))
 const _7b7043f3 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
+const _147a58fd = () => interopDefault(import('..\\pages\\index\\backup\\download.vue' /* webpackChunkName: "pages_index_backup_download" */))
+const _195b0d36 = () => interopDefault(import('..\\pages\\index\\backup\\upload.vue' /* webpackChunkName: "pages_index_backup_upload" */))
+const _b5b90948 = () => interopDefault(import('..\\pages\\index\\downloads\\magazine.vue' /* webpackChunkName: "pages_index_downloads_magazine" */))
+const _0222035a = () => interopDefault(import('..\\pages\\index\\downloads\\magazineMini.vue' /* webpackChunkName: "pages_index_downloads_magazineMini" */))
+const _d56b3e08 = () => interopDefault(import('..\\pages\\index\\downloads\\report.vue' /* webpackChunkName: "pages_index_downloads_report" */))
+const _404b0512 = () => interopDefault(import('..\\pages\\_prefix.vue' /* webpackChunkName: "pages__prefix" */))
+const _ed668b04 = () => interopDefault(import('..\\pages\\_prefix\\new.vue' /* webpackChunkName: "pages__prefix_new" */))
+const _e592fe7a = () => interopDefault(import('..\\pages\\_prefix\\profile\\_id.vue' /* webpackChunkName: "pages__prefix_profile__id" */))
 
 // TODO: remove in Nuxt 3
 const emptyFn = () => {}
@@ -26,25 +30,43 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
-    path: "/buses",
-    component: _5df0784f,
-    name: "buses"
-  }, {
-    path: "/drivers",
-    component: _c9df34a8,
-    name: "drivers"
-  }, {
-    path: "/routes",
-    component: _0022a479,
-    name: "routes"
-  }, {
-    path: "/ways",
-    component: _fc28055a,
-    name: "ways"
-  }, {
     path: "/",
     component: _7b7043f3,
-    name: "index"
+    name: "index",
+    children: [{
+      path: "backup/download",
+      component: _147a58fd,
+      name: "index-backup-download"
+    }, {
+      path: "backup/upload",
+      component: _195b0d36,
+      name: "index-backup-upload"
+    }, {
+      path: "downloads/magazine",
+      component: _b5b90948,
+      name: "index-downloads-magazine"
+    }, {
+      path: "downloads/magazineMini",
+      component: _0222035a,
+      name: "index-downloads-magazineMini"
+    }, {
+      path: "downloads/report",
+      component: _d56b3e08,
+      name: "index-downloads-report"
+    }]
+  }, {
+    path: "/:prefix",
+    component: _404b0512,
+    name: "prefix",
+    children: [{
+      path: "new",
+      component: _ed668b04,
+      name: "prefix-new"
+    }, {
+      path: "profile/:id?",
+      component: _e592fe7a,
+      name: "prefix-profile-id"
+    }]
   }],
 
   fallback: false

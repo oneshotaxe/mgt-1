@@ -1,3 +1,5 @@
+var dev = process.env.NODE_ENV === 'development'
+
 module.exports = {
   mode: 'spa',
   head: {
@@ -16,7 +18,8 @@ module.exports = {
   css: [
   ],
   plugins: [
-    '@plugins/app'
+    // '@plugins/app',
+    // '@plugins/composition-api'
   ],
   buildModules: [
     '@nuxtjs/vuetify',
@@ -25,7 +28,7 @@ module.exports = {
     '@nuxtjs/axios'
   ],
   axios: {
-    baseURL: 'http://localhost:3000'
+    baseURL:  dev ? '' : 'http://151.248.113.166'
   },
   vuetify: {
   },

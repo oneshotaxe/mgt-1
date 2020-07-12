@@ -1,14 +1,24 @@
 <template lang="pug">
-v-container
-  v-row
-    v-col
-    v-col
-      v-subheader Data
-      v-list
-        v-list-item(to="/drivers") Drivers
-        v-list-item(to="/buses") Buses
-        v-list-item(to="/routes") Routes
-        v-list-item(to="/ways") Ways
+  v-container
+    nuxt-child
+    v-row
+      v-col
+        v-subheader Выгрузки
+        v-list(dense)
+          v-list-item(to="/downloads/report") Отчет
+          v-list-item(to="/downloads/magazine") Журнал
+          v-list-item(to="/downloads/magazineMini") Журнал мини
+        v-subheader Резервное копирование
+        v-list(dense)
+          v-list-item(to="/backup/download") Скачать
+          v-list-item(to="/backup/upload") Загрузить
+      v-col
+        v-subheader Данные
+        v-list(dense)
+          v-list-item(to="/drivers") Водители
+          v-list-item(to="/buses") Автобусы
+          v-list-item(to="/routes") Маршруты
+          v-list-item(to="/ways") Выходы
 </template>
 
 <script>
