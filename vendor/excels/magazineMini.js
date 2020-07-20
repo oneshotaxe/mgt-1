@@ -29,7 +29,7 @@ export default async function (magazine) {
 }
 
 function render(cursor, pages) {
-  cursor.setColumnWidth([4, 9, 24, 9, 9, 7].concat(new Array(31).fill(4)).concat([9, 9, 9, 9]))
+  cursor.setColumnWidth([4, 4, 9, 24, 9, 7].concat(new Array(31).fill(4)).concat([9, 9, 9, 9]))
 
   for (let i = 0; i < pages.length; i++) {
     renderPage(cursor.createCursor(1 + ROWS_PER_PAGE * i, 1), pages[i])
@@ -86,7 +86,6 @@ function renderHeader(cursor) {
   //alignment
   cursor.getCell(1, 1).alignment.textRotation = 90
   cursor.getCell(1, 2).alignment.textRotation = 90
-  cursor.getCell(1, 4).alignment.textRotation = 90
   cursor.getCell(1, 5).alignment.textRotation = 90
 
   //borders
@@ -94,11 +93,11 @@ function renderHeader(cursor) {
 
   // content
   new Array(
-    { pos: [1, 1], text: '№ выхода.' },
-    { pos: [1, 2], text: '№ автоб.' },
-    { pos: [1, 3], text: 'Фамилия' },
-    { pos: [1, 4], text: 'Таб. №' },
-    { pos: [1, 5], text: '№ графика' },
+    { pos: [1, 1], text: '№ маршрута' },
+    { pos: [1, 2], text: '№ выхода' },
+    { pos: [1, 3], text: '№ автоб.' },
+    { pos: [1, 4], text: 'Фамилия' },
+    { pos: [1, 5], text: 'Таб. №' },
     { pos: [1, 6], text: 'Роспись' },
     { pos: [1, 7], text: 'Календарные числа месяца' },
     { pos: [1, 38], text: 'Режим работы' },
@@ -120,6 +119,7 @@ function renderHeader(cursor) {
 function renderBus(cursor, bus) {
   cursor.mergeCells(1, 1, 8, 1)
   cursor.mergeCells(1, 2, 8, 2)
+  cursor.mergeCells(1, 3, 8, 3)
 
   cursor.mergeCells(1, 38, 1, 40)
   cursor.mergeCells(2, 38, 2, 40)
@@ -145,7 +145,8 @@ function renderBus(cursor, bus) {
   //alignment
   cursor.getCell(1, 1).alignment.textRotation = 90
   cursor.getCell(1, 2).alignment.textRotation = 90
-  cursor.getArea(1, 3, 8, 3).forEach(cell => {
+  cursor.getCell(1, 3).alignment.textRotation = 90
+  cursor.getArea(1, 4, 8, 4).forEach(cell => {
     cell.alignment.horizontal = 'left'
   })
 
@@ -173,12 +174,14 @@ function renderBus(cursor, bus) {
 }
 
 function fillBusInfo(cursor, bus) {
-  cursor.getCell(1, 2).value = bus.num
+  cursor.getCell(1, 1).value = bus.way && bus.way.route && bus.way.route.num
+  cursor.getCell(1, 2).value = bus.way && bus.way.num
+  cursor.getCell(1, 3).value = bus.num
 
   const positions = getDriverPositionsByCount(bus.drivers.length)
 
   positions.forEach((pos, i) => {
-    fillDriverInfo(cursor.createCursor(pos, 3), bus.drivers[i])
+    fillDriverInfo(cursor.createCursor(pos, 4), bus.drivers[i])
   })
 
   if (bus.way) {
@@ -188,11 +191,12 @@ function fillBusInfo(cursor, bus) {
 
 function fillDriverInfo(cursor, driver) {
   cursor.getCell(1, 1).value = driver.name
-  cursor.getCell(1, 2).value = driver.num
-  cursor.getCell(1, 3).value = driver.graphic && driver.graphic.name
+  cursor.getCell(1, 2).value = driver.num.slice(3)
+  const graphicRow = driver.graphic && '' + driver.graphic.name
+  cursor.getCell(2, 1).value = graphicRow && `(ЛВ${graphicRow}) ${graphicRow.slice(0,1)} раб. - ${graphicRow.slice(1,2)} вых.`
 
   for (let i = 0; i < driver.statuses.length; i++) {
-    cursor.getCell(1, 5 + i).value = driver.statuses[i].value
+    cursor.getCell(1, 4 + i).value = driver.statuses[i].value
   }
 }
 
@@ -213,13 +217,13 @@ function fillWayInfo(cursor, way) {
 function getDriverPositionsByCount(count) {
   switch (count) {
     case 1:
-      return [5]
+      return [4]
     case 2:
-      return [3, 7]
+      return [2, 6]
     case 3:
-      return [2, 5, 8]
+      return [1, 4, 7]
     case 4:
-      return [2, 4, 6, 8]
+      return [1, 3, 5, 7]
     default:
       return []
   }
