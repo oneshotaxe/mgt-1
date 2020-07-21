@@ -13,10 +13,10 @@
 import FileSaver from 'file-saver'
 import moment from 'moment'
 import { buildMagazineMini } from '@/vendor/excels'
-import {mask} from 'vue-the-mask'
+import { mask } from 'vue-the-mask'
 
 export default {
-  directives: {mask},
+  directives: { mask },
   data() {
     return {
       title: 'Журнал мини',

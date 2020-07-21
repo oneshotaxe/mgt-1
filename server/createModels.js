@@ -71,13 +71,24 @@ module.exports = function (conn) {
     num: Types.String,
     route: { type: Types.ObjectId, ref: 'route' },
     times: {
-      durationFirstSmene: Types.String,
-      durationSecondSmene: Types.String,
-      outPark: Types.String,
-      change: Types.String,
-      endWork: Types.String,
-      lunchFirstSmene: Types.String,
-      lunchSecondSmene: Types.String,
+      type: {
+        durationFirstSmene: Types.String,
+        durationSecondSmene: Types.String,
+        outPark: Types.String,
+        change: Types.String,
+        endWork: Types.String,
+        lunchFirstSmene: Types.String,
+        lunchSecondSmene: Types.String,
+      },
+      default: {
+        durationFirstSmene: '',
+        durationSecondSmene: '',
+        outPark: '',
+        change: '',
+        endWork: '',
+        lunchFirstSmene: '',
+        lunchSecondSmene: '',
+      }
     }
   }))
 }
