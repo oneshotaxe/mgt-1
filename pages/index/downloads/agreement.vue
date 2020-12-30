@@ -3,6 +3,7 @@
     v-card
       v-card-title {{ title }}
       v-card-text
+        v-text-field(label="Месяц" v-model="month" v-mask="'####-##'")
       v-card-actions
         v-spacer
         v-btn(@click="fn") Скачать
@@ -27,7 +28,7 @@ export default {
     async fn() {
       const resDrivers = await this.$axios.post(`/drivers/read`)
       const resTemplate = await this.$axios.get('/agree.xlsx', { responseType: 'arraybuffer' })
-      const buf = await buildAgreement(resTemplate.data, resDrivers.data)
+      const buf = await buildAgreement(resTemplate.data, resDrivers.data, this.month)
       await FileSaver.saveAs(new Blob([buf]), 'agreement.xlsx')
       this.$router.push(`/`)
     }
