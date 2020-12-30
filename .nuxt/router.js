@@ -3,15 +3,15 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _7b7043f3 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
-const _147a58fd = () => interopDefault(import('..\\pages\\index\\backup\\download.vue' /* webpackChunkName: "pages_index_backup_download" */))
-const _195b0d36 = () => interopDefault(import('..\\pages\\index\\backup\\upload.vue' /* webpackChunkName: "pages_index_backup_upload" */))
-const _b5b90948 = () => interopDefault(import('..\\pages\\index\\downloads\\magazine.vue' /* webpackChunkName: "pages_index_downloads_magazine" */))
-const _0222035a = () => interopDefault(import('..\\pages\\index\\downloads\\magazineMini.vue' /* webpackChunkName: "pages_index_downloads_magazineMini" */))
-const _d56b3e08 = () => interopDefault(import('..\\pages\\index\\downloads\\report.vue' /* webpackChunkName: "pages_index_downloads_report" */))
-const _404b0512 = () => interopDefault(import('..\\pages\\_prefix.vue' /* webpackChunkName: "pages__prefix" */))
-const _ed668b04 = () => interopDefault(import('..\\pages\\_prefix\\new.vue' /* webpackChunkName: "pages__prefix_new" */))
-const _e592fe7a = () => interopDefault(import('..\\pages\\_prefix\\profile\\_id.vue' /* webpackChunkName: "pages__prefix_profile__id" */))
+const _0a1d5df7 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
+const _93030bfe = () => interopDefault(import('..\\pages\\index\\backup\\download.vue' /* webpackChunkName: "pages_index_backup_download" */))
+const _313b9f3a = () => interopDefault(import('..\\pages\\index\\backup\\upload.vue' /* webpackChunkName: "pages_index_backup_upload" */))
+const _b8bce850 = () => interopDefault(import('..\\pages\\index\\downloads\\magazine.vue' /* webpackChunkName: "pages_index_downloads_magazine" */))
+const _76b870cf = () => interopDefault(import('..\\pages\\index\\downloads\\magazineMini.vue' /* webpackChunkName: "pages_index_downloads_magazineMini" */))
+const _33ca6078 = () => interopDefault(import('..\\pages\\index\\downloads\\report.vue' /* webpackChunkName: "pages_index_downloads_report" */))
+const _4fcca3d4 = () => interopDefault(import('..\\pages\\_prefix.vue' /* webpackChunkName: "pages__prefix" */))
+const _0c1313fa = () => interopDefault(import('..\\pages\\_prefix\\new.vue' /* webpackChunkName: "pages__prefix_new" */))
+const _b5d1da72 = () => interopDefault(import('..\\pages\\_prefix\\profile\\_id.vue' /* webpackChunkName: "pages__prefix_profile__id" */))
 
 // TODO: remove in Nuxt 3
 const emptyFn = () => {}
@@ -31,40 +31,40 @@ export const routerOptions = {
 
   routes: [{
     path: "/",
-    component: _7b7043f3,
+    component: _0a1d5df7,
     name: "index",
     children: [{
       path: "backup/download",
-      component: _147a58fd,
+      component: _93030bfe,
       name: "index-backup-download"
     }, {
       path: "backup/upload",
-      component: _195b0d36,
+      component: _313b9f3a,
       name: "index-backup-upload"
     }, {
       path: "downloads/magazine",
-      component: _b5b90948,
+      component: _b8bce850,
       name: "index-downloads-magazine"
     }, {
       path: "downloads/magazineMini",
-      component: _0222035a,
+      component: _76b870cf,
       name: "index-downloads-magazineMini"
     }, {
       path: "downloads/report",
-      component: _d56b3e08,
+      component: _33ca6078,
       name: "index-downloads-report"
     }]
   }, {
     path: "/:prefix",
-    component: _404b0512,
+    component: _4fcca3d4,
     name: "prefix",
     children: [{
       path: "new",
-      component: _ed668b04,
+      component: _0c1313fa,
       name: "prefix-new"
     }, {
       path: "profile/:id?",
-      component: _e592fe7a,
+      component: _b5d1da72,
       name: "prefix-profile-id"
     }]
   }],
