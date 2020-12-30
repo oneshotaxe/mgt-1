@@ -6,6 +6,7 @@ import scrollBehavior from './router.scrollBehavior.js'
 const _0a1d5df7 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 const _93030bfe = () => interopDefault(import('..\\pages\\index\\backup\\download.vue' /* webpackChunkName: "pages_index_backup_download" */))
 const _313b9f3a = () => interopDefault(import('..\\pages\\index\\backup\\upload.vue' /* webpackChunkName: "pages_index_backup_upload" */))
+const _97186514 = () => interopDefault(import('..\\pages\\index\\downloads\\agreement.vue' /* webpackChunkName: "pages_index_downloads_agreement" */))
 const _b8bce850 = () => interopDefault(import('..\\pages\\index\\downloads\\magazine.vue' /* webpackChunkName: "pages_index_downloads_magazine" */))
 const _76b870cf = () => interopDefault(import('..\\pages\\index\\downloads\\magazineMini.vue' /* webpackChunkName: "pages_index_downloads_magazineMini" */))
 const _33ca6078 = () => interopDefault(import('..\\pages\\index\\downloads\\report.vue' /* webpackChunkName: "pages_index_downloads_report" */))
@@ -41,6 +42,10 @@ export const routerOptions = {
       path: "backup/upload",
       component: _313b9f3a,
       name: "index-backup-upload"
+    }, {
+      path: "downloads/agreement",
+      component: _97186514,
+      name: "index-downloads-agreement"
     }, {
       path: "downloads/magazine",
       component: _b8bce850,

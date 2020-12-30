@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const moment = require('moment')
 const createModels = require('./createModels')
 const createCrudRouter = require('./createCrudRouter')
+const fs = require('fs')
 
 const { statusesByDate } = require('../vendor/graphic_utils')
 
