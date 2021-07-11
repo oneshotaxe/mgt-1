@@ -27,7 +27,7 @@ export default async function (template, drivers, month) {
   
   drivers.sort((a, b) => a.num === b.num ? 0 : a.num < b.num ? -1 : 1)
     .forEach((driver, index) => {
-    ws.getCell(3 + index % 48, 2 + 4 * (Math.floor(index / 48))).value = driver.num.slice(3)
+    ws.getCell(3 + index % 48, 2 + 4 * (Math.floor(index / 48))).value = driver.num
     ws.getCell(3 + index % 48, 3 + 4 * (Math.floor(index / 48))).value = driver.shortName
   })
 
