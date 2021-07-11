@@ -115,12 +115,24 @@ app.post('/magazine', async (req, res) => {
 
   let daysInMonth = moment(req.body.month, "YYYY-MM").daysInMonth()
 
+  const weekdays = Array.from(
+    {
+      length: moment(req.body.month, "YYYY-MM").daysInMonth()
+    },
+    (x, i) => moment(req.body.month, "YYYY-MM")
+      .startOf('month')
+      .add(i, 'days')
+  ).filter(d => [6, 0].includes(d.day()))
+    .map(d => d.format('D'))
+
+
   buses = buses.map(bus => ({
     num: bus.num,
     way: bus.way,
     drivers: bus.drivers.map(driver => ({
       num: driver.num,
       name: driver.shortName,
+      fullname: driver.name,
       graphic: driver.graphic,
       statuses: statusesByDate(driver.graphic, req.body.month + '-01', daysInMonth)
     }))
@@ -135,6 +147,7 @@ app.post('/magazine', async (req, res) => {
     i += busesPerPage, pageNumber++
   ) {
     magazine.pages.push({
+      weekdays,
       buses: buses.slice(i, i + busesPerPage),
       number: pageNumber
     })

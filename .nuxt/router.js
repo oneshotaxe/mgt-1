@@ -9,6 +9,7 @@ const _bea3b3f6 = () => interopDefault(import('..\\pages\\index\\backup\\upload.
 const _880a5ffe = () => interopDefault(import('..\\pages\\index\\downloads\\agreement.vue' /* webpackChunkName: "pages_index_downloads_agreement" */))
 const _0f3a8bed = () => interopDefault(import('..\\pages\\index\\downloads\\magazine.vue' /* webpackChunkName: "pages_index_downloads_magazine" */))
 const _6ef95e64 = () => interopDefault(import('..\\pages\\index\\downloads\\magazineMini.vue' /* webpackChunkName: "pages_index_downloads_magazineMini" */))
+const _a42962ba = () => interopDefault(import('..\\pages\\index\\downloads\\magazineNew.vue' /* webpackChunkName: "pages_index_downloads_magazineNew" */))
 const _745e61cd = () => interopDefault(import('..\\pages\\index\\downloads\\report.vue' /* webpackChunkName: "pages_index_downloads_report" */))
 const _67652421 = () => interopDefault(import('..\\pages\\_prefix.vue' /* webpackChunkName: "pages__prefix" */))
 const _7b72a662 = () => interopDefault(import('..\\pages\\_prefix\\new.vue' /* webpackChunkName: "pages__prefix_new" */))
@@ -54,6 +55,10 @@ export const routerOptions = {
       path: "downloads/magazineMini",
       component: _6ef95e64,
       name: "index-downloads-magazineMini"
+    }, {
+      path: "downloads/magazineNew",
+      component: _a42962ba,
+      name: "index-downloads-magazineNew"
     }, {
       path: "downloads/report",
       component: _745e61cd,
