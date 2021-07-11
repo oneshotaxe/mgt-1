@@ -4,6 +4,7 @@
       v-col
         v-text-field(label="Номер" v-model="model.num")
         v-select(label="Цвет" v-model="model.color" :items="colors")
+        v-select(label="Статус" v-model="model.status" :items="statuses")
         v-autocomplete(label="Выход" v-model="model.way" :items="ways")
       v-col
 </template>
@@ -18,6 +19,12 @@ export default {
         'Синий',
         'Голубой',
         'Зеленый'
+      ],
+      statuses: [
+        '',
+        'Ремонт',
+        'СВАРЗ',
+        'Резерв'
       ]
     }
   },

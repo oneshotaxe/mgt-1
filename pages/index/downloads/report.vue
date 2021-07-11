@@ -3,7 +3,7 @@
     v-card
       v-card-title {{ title }}
       v-card-text
-        v-text-field(label="Дата" v-model="date")
+        v-text-field(label="Дата" v-model="date" v-mask="'####-##-##'")
       v-card-actions
         v-spacer
         v-btn(@click="fn") Скачать
@@ -11,23 +11,26 @@
 
 <script>
 import FileSaver from 'file-saver'
-import { buildMagazine } from '@/vendor/excels'
+import moment from 'moment'
+import { buildReport } from '@/vendor/excels'
+import { mask } from 'vue-the-mask'
 
 export default {
+  directives: { mask },
   data() {
     return {
       title: 'Отчет',
       dialog: true,
-      date: ''
+      date: moment().format('YYYY-MM-DD')
     }
   },
   methods: {
     async fn () {
-      const { data } = await this.$axios.post('/report')
+      const { data } = await this.$axios.post('/report', { date: this.date })
       console.log(data)
-      // const buf = await buildMagazine()
-      // await FileSaver.saveAs(new Blob([buf]), 'magazine.xlsx')
-      // this.$router.push(`/`)
+      const buf = await buildReport(data)
+      await FileSaver.saveAs(new Blob([buf]), 'report.xlsx')
+      this.$router.push(`/`)
     }
   },
   watch: {

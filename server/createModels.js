@@ -48,6 +48,7 @@ module.exports = function (conn) {
   const busSchema = new Schema({
     num: Types.String,
     color: Types.String,
+    status: Types.String,
     way: { type: Types.ObjectId, ref: 'way' }
   }, {
     toObject: { virtuals: true },

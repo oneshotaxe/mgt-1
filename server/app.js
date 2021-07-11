@@ -23,16 +23,10 @@ createModels(conn)
 
 app.set('mongoose', conn)
 
-app.use('/drivers', createCrudRouter('driver', [
-  'bus'
-]))
-app.use('/buses', createCrudRouter('bus', [
-  'way'
-]))
+app.use('/drivers', createCrudRouter('driver', ['bus']))
+app.use('/buses', createCrudRouter('bus', ['way']))
 app.use('/routes', createCrudRouter('route'))
-app.use('/ways', createCrudRouter('way', [
-  'route'
-]))
+app.use('/ways', createCrudRouter('way', ['route']))
 
 app.post('/report', async (req, res) => {
   const Bus = res.app.get('mongoose').models['bus']
@@ -43,12 +37,12 @@ app.post('/report', async (req, res) => {
       num: bus.num,
       status: bus.status,
       drivers: bus.drivers.map(driver => {
-        const status = statusesByDate(driver.graphic, req.body.date || '2020-06-26', 1)[0]
-        
+        const status = statusesByDate(driver.graphic, req.body.date, 1)[0]
         return {
           _id: driver._id,
           num: driver.num,
-          status: status.exception || status.value
+          name: driver.shortName,
+          status: status.exception || driver.graphic.status || status.value
         }
       })
     }))
@@ -85,6 +79,10 @@ app.post('/report', async (req, res) => {
     bus.drivers.forEach(driver => {
       if (['В', 'Б', 'О'].includes(driver.status)) {
         report.drivers[driver.status].push(driver)
+
+        if (driver.status == 'В') {
+          row.weekday = driver
+        }
         return
       }
 
