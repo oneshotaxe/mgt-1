@@ -395,6 +395,13 @@ function renderRightBus(cursor, bus) {
 }
 
 function fillRightDriverInfo(cursor, driver) {
+  //font
+  cursor.getArea(1, 1, 1, 12).forEach(cell => {
+    cell.font = {
+      size: 14
+    }
+  })
+
   for (let i = 12; i < driver.statuses.length; i++) {
     cursor.getCell(1, i - 11).value = driver.statuses[i].value
   }
