@@ -31,8 +31,8 @@ export default async function (magazine) {
 }
 
 function renderOverwork(cursor, pages) {
-  cursor.setColumnWidth([10, 15, 33, 10, 10]);
-  cursor.getArea(1, 1, 200, 5).forEach(cell => {
+  cursor.setColumnWidth([10, 15, 33, 10, 10, 10, 15, 15]);
+  cursor.getArea(1, 1, 200, 8).forEach(cell => {
     cell.font = {
       size: 16,
       bold: true
@@ -44,6 +44,8 @@ function renderOverwork(cursor, pages) {
   cursor.getCell(1, 3).value = "Ф.И.О.";
   cursor.getCell(1, 4).value = "Сейчас";
   cursor.getCell(1, 5).value = "Нужно";
+  cursor.getCell(1, 7).value = "Факт";
+  cursor.getCell(1, 8).value = "Переработка";
 
   let row = 2;
   for (const page of pages) {
@@ -55,8 +57,8 @@ function renderOverwork(cursor, pages) {
           cursor.getCell(row, 3).value = driver.name;
           cursor.getCell(row, 4).value = driver.rates.currRate;
           cursor.getCell(row, 5).value = driver.rates.needRate;
-          cursor.getCell(row, 7).value = driver.rates.currTotal;
-          cursor.getCell(row, 8).value = driver.rates.over;
+          cursor.getCell(row, 7).value = Math.ceil(driver.rates.currTotal);
+          cursor.getCell(row, 8).value = Math.ceil(driver.rates.over);
           row++;
         }
       }
