@@ -138,7 +138,7 @@ app.post('/magazine', async (req, res) => {
     }))
   }))
 
-  const norm = +req.body.norm ?? 0;
+  const norm = +req.body.norm || 0;
   for (const bus of buses) {
     for (const driver of bus.drivers) {
       try {
