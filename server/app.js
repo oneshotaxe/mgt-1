@@ -132,6 +132,7 @@ app.post('/magazine', async (req, res) => {
     drivers: bus.drivers.map(driver => ({
       num: driver.num,
       name: driver.shortName,
+      firstDayRest: driver.firstDayRest,
       fullname: driver.name,
       graphic: driver.graphic,
       statuses: statusesByDate(driver.graphic, req.body.month + '-01', daysInMonth)
@@ -142,20 +143,29 @@ app.post('/magazine', async (req, res) => {
   for (const bus of buses) {
     for (const driver of bus.drivers) {
       try {
-        let weekendCounter = 0;
-        for (const status of driver.statuses) {
-          if (status.value === 'В') {
-            if (weekendCounter === 1) {
-              status.value = 'О';
-              weekendCounter = 0;
-            } else {
-              weekendCounter++;
+        if (driver.graphic.name[1] === '2') {
+          let statuses = driver.statuses;
+          if (driver.firstDayRest) {
+            statuses.reverse();
+          }
+  
+          for (let i = 0; i < statuses.length - 1; i++) {
+            if (statuses[i].value === 'В') {
+              if (i === 0 && statuses[i + 1].value !== 'В') {
+                statuses[i].value = 'О';
+              }
+  
+              if (statuses[i + 1].value === 'В') {
+                statuses[i + 1].value = 'О';
+              }
             }
-          } else {
-            weekendCounter = 0;
+          }
+
+          if (driver.firstDayRest) {
+            statuses.reverse();
           }
         }
-      } catch (e) {}
+      } catch (e) { }
 
       try {
         const workStatuses = driver.statuses.filter(s => ['Р', '1', '2'].includes(s.value));
