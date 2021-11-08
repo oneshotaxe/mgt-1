@@ -138,6 +138,69 @@ app.post('/magazine', async (req, res) => {
     }))
   }))
 
+  const norm = +req.body.norm ?? 0;
+  for (const bus of buses) {
+    for (const driver of bus.drivers) {
+      try {
+        let weekendCounter = 0;
+        for (const status of driver.statuses) {
+          if (status.value === 'В') {
+            if (weekendCounter === 1) {
+              status.value = 'О';
+              weekendCounter = 0;
+            } else {
+              weekendCounter++;
+            }
+          } else {
+            weekendCounter = 0;
+          }
+        }
+      } catch (e) {}
+
+      try {
+        const workStatuses = driver.statuses.filter(s => ['Р', '1', '2'].includes(s.value));
+        const workMinutes = workStatuses.reduce((acc, cur) => {
+          try {
+            let time;
+            switch (cur.value) {
+              case 'Р':
+                time = bus.way.times.durationFirstSmene.split(':')
+                return acc + +time[1] + +time[0] * 60;
+              case '1':
+                time = bus.way.times.durationFirstSmene.split(':')
+                return acc + +time[1] + +time[0] * 60;
+              case '2':
+                time = bus.way.times.durationSecondSmene.split(':')
+                return acc + +time[1] + +time[0] * 60;
+            }
+          } catch (e) {
+            return acc;
+          };
+          return acc;
+        }, 0);
+        const workHours = workMinutes / 60;
+
+        const needRate = [
+          Math.floor(norm / workStatuses.length),
+          Math.floor(((norm / workStatuses.length) % 1) * 60)
+        ];
+
+        const currRate = [
+          Math.floor(workHours / workStatuses.length),
+          Math.floor(((workHours / workStatuses.length) % 1) * 60)
+        ];
+
+        driver.rates = {
+          needRate: needRate.join(':'),
+          currRate: currRate.join(':'),
+          isCritic: ((norm + 11) - workHours) <= 0
+        }
+      } catch (e) {
+        continue;
+      }
+    }
+  }
+
   const magazine = { pages: [] }
   const busesPerPage = req.body.busesPerPage || 4
 
