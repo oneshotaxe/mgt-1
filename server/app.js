@@ -193,6 +193,8 @@ app.post('/magazine', async (req, res) => {
         driver.rates = {
           needRate: needRate.join(':'),
           currRate: currRate.join(':'),
+          currTotal: workHours,
+          over: workHours - norm,
           isCritic: ((norm + 11) - workHours) <= 0
         }
       } catch (e) {

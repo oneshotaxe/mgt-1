@@ -55,6 +55,8 @@ function renderOverwork(cursor, pages) {
           cursor.getCell(row, 3).value = driver.name;
           cursor.getCell(row, 4).value = driver.rates.currRate;
           cursor.getCell(row, 5).value = driver.rates.needRate;
+          cursor.getCell(row, 7).value = driver.rates.currTotal;
+          cursor.getCell(row, 8).value = driver.rates.over;
           row++;
         }
       }
