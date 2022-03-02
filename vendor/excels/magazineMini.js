@@ -75,6 +75,13 @@ function render(cursor, pages) {
 }
 
 function renderPage(cursor, page) {
+  const cell = cursor.getCell(4, 41)
+  cell.value = page.number + 1
+  cell.alignment = {
+    vertical: 'middle',
+    horizontal: 'center'
+  }
+
   cursor.setRowHeight(new Array(ROWS_PER_PAGE).fill(18.75))
 
   cursor.getArea(1, 1, ROWS_PER_PAGE, COLUMNS_PER_PAGE).forEach(cell => {
