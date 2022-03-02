@@ -65,14 +65,14 @@ function renderLeftPage(cursor, page, isEmpty) {
     }
   })
 
-  renderLeftHeader(cursor.createCursor(5, 1))
+  renderLeftHeader(cursor.createCursor(5, 1), page.weekdays)
   for (let i = 0; i < 5; i++) {
     renderLeftBus(cursor.createCursor(7 + i * 8, 1), page.buses[i])
   }
   cursor.getCell(1,1).value = page.number + 1
 }
 
-function renderLeftHeader(cursor) {
+function renderLeftHeader(cursor, weekdays = []) {
   // merges
   new Array(
     [1, 1, 2, 1],
@@ -111,6 +111,18 @@ function renderLeftHeader(cursor) {
 
   new Array(12).fill(1).map((_, i) => i + 1).forEach(i => {
     cursor.getCell(2, 4 + i).value = i
+
+    if (weekdays.includes(i.toString())) {
+      cursor.createCursor(2, 4 + i)
+        .getArea(1, 1, 41, 1)
+        .forEach(cell => {
+          cell.fill = {
+            type: 'pattern',
+            pattern:'solid',
+            fgColor:{argb:'FFbfbfbf'}
+          }
+        })
+    }
   })
 }
 
@@ -176,14 +188,14 @@ function renderRightPage(cursor, page, isEmpty = false) {
   if (isEmpty) {
     return
   }
-  renderRightHeader(cursor.createCursor(5, 1))
+  renderRightHeader(cursor.createCursor(5, 1), page.weekdays)
   for (let i = 0; i < 5; i++) {
     renderRightBus(cursor.createCursor(7 + i * 8, 1), page.buses[i])
   }
   cursor.getCell(1,24).value = page.number + 1
 }
 
-function renderRightHeader(cursor) {
+function renderRightHeader(cursor, weekdays = []) {
   cursor.getArea(1, 1, 2, 24).forEach(cell => {
     cell.alignment = {
       vertical: 'middle',
@@ -199,6 +211,18 @@ function renderRightHeader(cursor) {
   })
   new Array(19).fill(1).map((_, i) => i + 13).forEach(i => {
     cursor.getCell(2, i - 11).value = i
+
+    if (weekdays.includes(i.toString())) {
+      cursor.createCursor(2, i - 11)
+        .getArea(1, 1, 41, 1)
+        .forEach(cell => {
+          cell.fill = {
+            type: 'pattern',
+            pattern:'solid',
+            fgColor:{argb:'FFbfbfbf'}
+          }
+        })
+    }
   })
 
   // merges
