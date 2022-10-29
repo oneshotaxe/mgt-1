@@ -81,6 +81,9 @@ function renderPage(cursor, page) {
     vertical: 'middle',
     horizontal: 'center'
   }
+  const driversLength = `Водителей: ${page.buses?.reduce((acc, bus) => acc + bus.drivers?.length ?? 0, 0) ?? 0}.`;
+  const busesLength = `Автобусов: ${page.buses?.length ?? 0}.`;
+  cursor.getCell(5, 4).value = ` ${busesLength} ${driversLength}`;
 
   cursor.setRowHeight(new Array(ROWS_PER_PAGE).fill(18.75))
 
